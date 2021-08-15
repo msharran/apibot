@@ -18,6 +18,8 @@ package cmd
 import (
 	"fmt"
 
+	"github.com/sharran-murali/apibot/src/config"
+	"github.com/sharran-murali/apibot/src/utils"
 	"github.com/spf13/cobra"
 )
 
@@ -32,7 +34,27 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("get called")
+		if len(args) == 0 {
+			utils.ExitWithMsg("Missing argument endpoint: Eg, apibot get /example-endpoint")
+		}
+		endpoint := args[0]
+		profile := config.GetProfile(profileName)
+
+		spinner.Start()
+		resp, err := client.R().
+			EnableTrace().
+			SetHeader("Authorization", profile.AuthorizationHeader).
+			Get(profile.BaseUrl + endpoint)
+
+		spinner.Stop()
+		cobra.CheckErr(err)
+
+		fmt.Println("------------------------------")
+		fmt.Println("URL           :", resp.Request.URL)
+		fmt.Println("Response Time : ", resp.Time())
+		fmt.Println("------------------------------")
+		fmt.Println("Response Body : \n", resp)
+		fmt.Println("------------------------------")
 	},
 }
 
@@ -43,7 +65,6 @@ func init() {
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// getCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:

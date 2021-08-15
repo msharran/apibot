@@ -35,7 +35,6 @@ var initCmd = &cobra.Command{
 			cobra.CheckErr(err)
 		}
 
-		profileName, _ := rootCmd.PersistentFlags().GetString("profile")
 		baseURL, _ := cmd.Flags().GetString("base-url")
 		authorizationHeader, _ := cmd.Flags().GetString("authorization-header")
 
@@ -59,7 +58,6 @@ func init() {
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	rootCmd.PersistentFlags().StringP("profile", "p", "default", "You can use multiple profiles for your client. By default the profile name is default")
 	initCmd.Flags().StringP("base-url", "b", "", "The base url for the API")
 	initCmd.Flags().StringP("authorization-header", "a", "", `Authorization header for the API. eg., -a="Bearer *token*"`)
 

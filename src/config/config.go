@@ -40,3 +40,19 @@ func UpdateProfile(name string, profile Profile) {
 
 	fmt.Printf("ApiBot profile %v successfully!\n", statusMsg)
 }
+
+func GetProfile(name string) Profile {
+	profiles := make(map[string]Profile)
+
+	existingConfigData, err := ioutil.ReadFile(GetConfigFile())
+	cobra.CheckErr(err)
+
+	err = yaml.Unmarshal(existingConfigData, &profiles)
+	cobra.CheckErr(err)
+
+	if _, ok := profiles[name]; !ok {
+		utils.ExitWithMsg("Invalid Profile")
+	}
+
+	return profiles[name]
+}

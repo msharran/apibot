@@ -5,12 +5,14 @@ import (
 	"os"
 )
 
+const apiBotErrorPrefix = "[apibot] [error] "
+
 func ExitWithError(err error) {
-	fmt.Println("[error] " + err.Error())
+	fmt.Println(apiBotErrorPrefix + err.Error())
 	os.Exit(1)
 }
 
 func ExitWithMsg(msg string) {
-	fmt.Println("[error] " + msg)
+	fmt.Println(apiBotErrorPrefix + msg)
 	os.Exit(1)
 }
