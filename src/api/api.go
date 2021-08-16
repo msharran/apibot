@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/go-resty/resty/v2"
+	"github.com/kyokomi/emoji"
 	"github.com/sharran-murali/apibot/src/config"
 	"github.com/sharran-murali/apibot/src/utils"
 )
@@ -37,27 +38,26 @@ func (c *Client) Request(profileName string) *resty.Request {
 
 func (c *Client) Println(resp *resty.Response) {
 	fmt.Println()
-	fmt.Println("----------------------------------------------------------------")
+	fmt.Println("--------------------------------------------------------------------------")
 	utils.LogInfoln("Request")
-	fmt.Println("----------------------------------------------------------------")
+	fmt.Println("--------------------------------------------------------------------------")
 	fmt.Println("URL\t\t:", resp.Request.URL)
 	fmt.Println("Time\t\t: ", resp.Time().String())
 	fmt.Printf("Trace\t\t: %+v\n", resp.Request.TraceInfo())
-	fmt.Println("----------------------------------------------------------------")
+	fmt.Println("--------------------------------------------------------------------------")
 	utils.LogInfoln("Request headers")
-	fmt.Println("----------------------------------------------------------------")
+	fmt.Println("--------------------------------------------------------------------------")
 	fmt.Print(printableHeaders(resp.Request.Header))
-	fmt.Println("----------------------------------------------------------------")
+	fmt.Println("--------------------------------------------------------------------------")
 	utils.LogInfo("Response ")
 	if resp.IsSuccess() {
-
-		utils.LogSuccessln("[" + resp.Status() + "]")
+		utils.LogSuccessln(emoji.Sprint(":check_mark_button:") + "[" + resp.Status() + "]")
 	} else {
-		utils.LogErrorln("[" + resp.Status() + "]")
+		utils.LogErrorln(emoji.Sprint(":cross_mark:") + "[" + resp.Status() + "]")
 	}
-	fmt.Println("----------------------------------------------------------------")
+	fmt.Println("--------------------------------------------------------------------------")
 	fmt.Println(resp)
-	fmt.Println("----------------------------------------------------------------")
+	fmt.Println("--------------------------------------------------------------------------")
 }
 
 func printableHeaders(header http.Header) (headerStr string) {

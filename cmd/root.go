@@ -51,8 +51,7 @@ func Execute() {
 }
 
 func init() {
-	spinner.Prefix = utils.LogInfoSprintf("Please wait... ")
-	spinner.Color("yellow")
+	spinner.Prefix = utils.LogBlueSprintf("=> Please wait... ")
 	cobra.OnInitialize(setHeaders)
 
 	rootCmd.PersistentFlags().StringVarP(&profileName, "profile", "p", "default", "You can use multiple profiles for your client. By default the profile name is default")
