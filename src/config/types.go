@@ -1,6 +1,6 @@
 package config
 
 type Profile struct {
-	BaseUrl             string `yaml:"base_url"`
-	AuthorizationHeader string `yaml:"authorization_header"`
+	BaseUrl string            `yaml:"base_url"`
+	Headers map[string]string `yaml:"headers"`
 }

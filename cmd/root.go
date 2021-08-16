@@ -22,7 +22,7 @@ import (
 
 	spinnerLib "github.com/briandowns/spinner"
 	"github.com/sharran-murali/apibot/src/api"
-	"github.com/sharran-murali/apibot/src/utils"
+	"github.com/sharran-murali/apibot/src/botfactory"
 	"github.com/spf13/cobra"
 )
 
@@ -51,7 +51,7 @@ func Execute() {
 }
 
 func init() {
-	spinner.Prefix = utils.LogBlueSprintf("=> Please wait... ")
+	spinner.Prefix = botfactory.LogBlueSprintf("=> Please wait... ")
 	cobra.OnInitialize(setHeaders)
 
 	rootCmd.PersistentFlags().StringVarP(&profileName, "profile", "p", "default", "You can use multiple profiles for your client. By default the profile name is default")

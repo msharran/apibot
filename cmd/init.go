@@ -18,9 +18,9 @@ package cmd
 import (
 	"os"
 
+	"github.com/sharran-murali/apibot/src/botfactory"
 	"github.com/sharran-murali/apibot/src/config"
 	"github.com/sharran-murali/apibot/src/constants"
-	"github.com/sharran-murali/apibot/src/utils"
 	"github.com/spf13/cobra"
 )
 
@@ -30,17 +30,19 @@ var initCmd = &cobra.Command{
 	Short: "Initializes apibot config file",
 	Long:  `Creates or updates an existing config file in ~/.apibot/config.yaml with user provided environment profile.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		if utils.IsFileNotExist(utils.GetApiBotDir()) {
-			err := os.Mkdir(utils.GetApiBotDir(), constants.DirPerm)
-			utils.CheckErr(err)
+		if len(args) == 0 {
+			botfactory.LogFatalErrorln(`Base url is missing. \nEg., apibot init "https://example.com"`)
+		}
+
+		if botfactory.IsFileNotExist(botfactory.GetApiBotDir()) {
+			err := os.Mkdir(botfactory.GetApiBotDir(), constants.DirPerm)
+			botfactory.CheckErr(err)
 		}
 
 		baseURL, _ := cmd.Flags().GetString("base-url")
-		authorizationHeader, _ := cmd.Flags().GetString("authorization-header")
 
 		profile := config.Profile{
-			BaseUrl:             baseURL,
-			AuthorizationHeader: authorizationHeader,
+			BaseUrl: baseURL,
 		}
 
 		config.UpdateProfile(profileName, profile)
@@ -49,9 +51,4 @@ var initCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(initCmd)
-
-	initCmd.Flags().StringP("base-url", "b", "", "The base url for the API")
-	initCmd.Flags().StringP("authorization-header", "a", "", `Authorization header for the API. eg., -a="Bearer *token*"`)
-
-	initCmd.MarkFlagRequired("base-url")
 }

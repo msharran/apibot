@@ -7,8 +7,8 @@ import (
 
 	"github.com/go-resty/resty/v2"
 	"github.com/kyokomi/emoji"
+	"github.com/sharran-murali/apibot/src/botfactory"
 	"github.com/sharran-murali/apibot/src/config"
-	"github.com/sharran-murali/apibot/src/utils"
 )
 
 type Client struct {
@@ -28,10 +28,10 @@ func (c *Client) SetHeaders(headers map[string]string) {
 }
 
 func (c *Client) Request(profileName string) *resty.Request {
-	if utils.IsFileExist(config.GetConfigFile()) {
+	if botfactory.IsFileExist(config.GetConfigFile()) {
 		profile := config.GetProfile(profileName)
 		c.restyClient.SetHostURL(profile.BaseUrl)
-		c.restyClient.SetHeader("Authorization", profile.AuthorizationHeader)
+		c.restyClient.SetHeaders(profile.Headers)
 	}
 	return c.restyClient.R()
 }
@@ -39,21 +39,21 @@ func (c *Client) Request(profileName string) *resty.Request {
 func (c *Client) Println(resp *resty.Response) {
 	fmt.Println()
 	fmt.Println("--------------------------------------------------------------------------")
-	utils.LogInfoln("Request")
+	botfactory.LogInfoln("Request")
 	fmt.Println("--------------------------------------------------------------------------")
 	fmt.Println("URL\t\t:", resp.Request.URL)
 	fmt.Println("Time\t\t: ", resp.Time().String())
 	fmt.Printf("Trace\t\t: %+v\n", resp.Request.TraceInfo())
 	fmt.Println("--------------------------------------------------------------------------")
-	utils.LogInfoln("Request headers")
+	botfactory.LogInfoln("Request headers")
 	fmt.Println("--------------------------------------------------------------------------")
 	fmt.Print(printableHeaders(resp.Request.Header))
 	fmt.Println("--------------------------------------------------------------------------")
-	utils.LogInfo("Response ")
+	botfactory.LogInfo("Response ")
 	if resp.IsSuccess() {
-		utils.LogSuccessln(emoji.Sprint(":check_mark_button:") + "[" + resp.Status() + "]")
+		botfactory.LogSuccessln(emoji.Sprint(":check_mark_button:") + "[" + resp.Status() + "]")
 	} else {
-		utils.LogErrorln(emoji.Sprint(":cross_mark:") + "[" + resp.Status() + "]")
+		botfactory.LogErrorln(emoji.Sprint(":cross_mark:") + "[" + resp.Status() + "]")
 	}
 	fmt.Println("--------------------------------------------------------------------------")
 	fmt.Println(resp)

@@ -16,7 +16,7 @@ limitations under the License.
 package cmd
 
 import (
-	"github.com/sharran-murali/apibot/src/utils"
+	"github.com/sharran-murali/apibot/src/botfactory"
 	"github.com/spf13/cobra"
 )
 
@@ -27,7 +27,7 @@ var getCmd = &cobra.Command{
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) == 0 {
-			utils.LogFatalErrorln("Missing argument endpoint: Eg, apibot get /example-endpoint")
+			botfactory.LogFatalErrorln("Missing argument endpoint: Eg, apibot get /example-endpoint")
 		}
 		endpoint := args[0]
 
@@ -36,7 +36,7 @@ var getCmd = &cobra.Command{
 		spinner.Stop()
 		client.Println(resp)
 
-		utils.CheckErr(err)
+		botfactory.CheckErr(err)
 
 	},
 }
