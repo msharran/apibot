@@ -22,13 +22,14 @@ import (
 
 	spinnerLib "github.com/briandowns/spinner"
 	"github.com/sharran-murali/apibot/src/api"
+	"github.com/sharran-murali/apibot/src/utils"
 	"github.com/spf13/cobra"
 )
 
 var profileName = "default"
 var headersString = ""
 var headers map[string]string
-var spinner = spinnerLib.New(spinnerLib.CharSets[11], 100*time.Millisecond)
+var spinner = spinnerLib.New(spinnerLib.CharSets[39], 80*time.Millisecond)
 var client = api.NewClient()
 
 // rootCmd represents the base command when called without any subcommands
@@ -50,7 +51,8 @@ func Execute() {
 }
 
 func init() {
-	spinner.Prefix = "Please wait... "
+	spinner.Prefix = utils.LogInfoSprintf("Please wait... ")
+	spinner.Color("yellow")
 	cobra.OnInitialize(setHeaders)
 
 	rootCmd.PersistentFlags().StringVarP(&profileName, "profile", "p", "default", "You can use multiple profiles for your client. By default the profile name is default")

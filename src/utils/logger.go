@@ -11,6 +11,7 @@ var bluePrintf = color.New(color.Bold, color.FgBlue).PrintfFunc()
 var blueSprintf = color.New(color.Bold, color.FgBlue).SprintfFunc()
 var greenPrintf = color.New(color.Bold, color.FgGreen).PrintfFunc()
 var yellowPrintf = color.New(color.Bold, color.FgYellow).PrintfFunc()
+var yellowSprintf = color.New(color.Bold, color.FgYellow).SprintfFunc()
 
 func LogFatalErrorln(err interface{}) {
 	redPrintf("[Error] %v\n", err)
@@ -29,6 +30,10 @@ func LogInfoln(info interface{}) {
 
 func LogInfo(info interface{}) {
 	yellowPrintf("%v", info)
+}
+
+func LogInfoSprintf(info interface{}) string {
+	return yellowSprintf("%v", info)
 }
 
 func LogBlueln(info interface{}) {
