@@ -6,7 +6,7 @@ import (
 	"github.com/fatih/color"
 )
 
-var redPrintf = color.New(color.Bold, color.FgRed).PrintfFunc()
+var redPrintf = color.New(color.Bold, color.FgHiRed).PrintfFunc()
 var bluePrintf = color.New(color.Bold, color.FgBlue).PrintfFunc()
 var blueSprintf = color.New(color.Bold, color.FgBlue).SprintfFunc()
 var greenPrintf = color.New(color.Bold, color.FgGreen).PrintfFunc()

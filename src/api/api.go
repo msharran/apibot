@@ -38,26 +38,35 @@ func (c *Client) Request(profileName string) *resty.Request {
 
 func (c *Client) Println(resp *resty.Response) {
 	fmt.Println()
-	fmt.Println("--------------------------------------------------------------------------")
-	botfactory.LogInfoln("Request")
-	fmt.Println("--------------------------------------------------------------------------")
-	fmt.Println("URL\t\t:", resp.Request.URL)
+	fmt.Println("---------------------------------------------------------------------------------------------------")
+	botfactory.LogInfo("Request ")
+	botfactory.LogSuccess(fmt.Sprintf("[%v] ", resp.Request.Method))
+	fmt.Println("=>", resp.Request.URL)
+	fmt.Println("---------------------------------------------------------------------------------------------------")
 	fmt.Println("Time\t\t: ", resp.Time().String())
 	fmt.Printf("Trace\t\t: %+v\n", resp.Request.TraceInfo())
-	fmt.Println("--------------------------------------------------------------------------")
-	botfactory.LogInfoln("Request headers")
-	fmt.Println("--------------------------------------------------------------------------")
-	fmt.Print(printableHeaders(resp.Request.Header))
-	fmt.Println("--------------------------------------------------------------------------")
+	fmt.Println("---------------------------------------------------------------------------------------------------")
+	if len(resp.Request.Header) > 0 {
+		botfactory.LogBlueln("Headers")
+		fmt.Println("--------")
+		fmt.Print(printableHeaders(resp.Request.Header))
+	}
+	if resp.Request.Body != "" {
+		fmt.Println("--------")
+		botfactory.LogBlueln("Body")
+		fmt.Println("--------")
+		fmt.Println(resp.Request.Body)
+	}
+	fmt.Println("---------------------------------------------------------------------------------------------------")
 	botfactory.LogInfo("Response ")
 	if resp.IsSuccess() {
 		botfactory.LogSuccessln(emoji.Sprint(":check_mark_button:") + "[" + resp.Status() + "]")
 	} else {
 		botfactory.LogErrorln(emoji.Sprint(":cross_mark:") + "[" + resp.Status() + "]")
 	}
-	fmt.Println("--------------------------------------------------------------------------")
+	fmt.Println("---------------------------------------------------------------------------------------------------")
 	fmt.Println(resp)
-	fmt.Println("--------------------------------------------------------------------------")
+	fmt.Println("---------------------------------------------------------------------------------------------------")
 }
 
 func printableHeaders(header http.Header) (headerStr string) {
