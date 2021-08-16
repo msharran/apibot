@@ -48,9 +48,9 @@ apibot init "https://jsonplaceholder.typicode.com" --profile=dev
     Custom: Header
   requests:
     create_post:
-      Endpoint: /posts
-      Method: POST
-      Body: >
+      endpoint: /posts
+      method: POST
+      body: >
         {
           title: 'foo',
           body: 'bar',
