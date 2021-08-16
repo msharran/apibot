@@ -11,17 +11,32 @@ A Postman for terminal users
 ---
 # Usage
 
-## Step 1: Initialize ApiBot with base url
+## Initialize ApiBot with base url
 ```bash
-apibot init "http://localhost"
+apibot init "https://jsonplaceholder.typicode.com"
 ```
   For adding new profile pass `-p` or `--profile`. By default a profile named `default` is created for you.
 ```bash
-apibot init "http://localhost:3000" -p=backend
+apibot init "https://jsonplaceholder.typicode.com" --profile=dev
 ```
  *Note: The config file is created in `~/.apibot/config.yaml`*
+
+ ## Simple GET Request
  
- ## Step 2: Send request
+ Examples
+ ```bash
+ apibot get /comments/1
+ ```
+
+ ```bash
+ apibot get /comments/1 -p=dev
+ ```
+ 
+ ```bash
+ apibot get "/users?limit=10"
+ ```
+
+ ## Sending complex request
  
  1. Add your request in `config.yaml` under requests section with a unique request name. 
  
