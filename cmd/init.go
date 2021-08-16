@@ -31,7 +31,7 @@ var initCmd = &cobra.Command{
 	Long:  `Creates or updates an existing config file in ~/.apibot/config.yaml with user provided environment profile.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) == 0 {
-			botfactory.LogFatalErrorln(`Base url is missing. \nEg., apibot init "https://example.com"`)
+			botfactory.LogFatalErrorln("Base url is missing. \n Eg., apibot init 'https://example.com'")
 		}
 
 		if botfactory.IsFileNotExist(botfactory.GetApiBotDir()) {
@@ -39,7 +39,7 @@ var initCmd = &cobra.Command{
 			botfactory.CheckErr(err)
 		}
 
-		baseURL, _ := cmd.Flags().GetString("base-url")
+		baseURL := args[0]
 
 		profile := config.Profile{
 			BaseUrl: baseURL,
