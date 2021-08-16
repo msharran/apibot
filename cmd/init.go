@@ -32,7 +32,7 @@ var initCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		if utils.IsFileNotExist(utils.GetApiBotDir()) {
 			err := os.Mkdir(utils.GetApiBotDir(), constants.DirPerm)
-			cobra.CheckErr(err)
+			utils.CheckErr(err)
 		}
 
 		baseURL, _ := cmd.Flags().GetString("base-url")
@@ -50,17 +50,8 @@ var initCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(initCmd)
 
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// initCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
 	initCmd.Flags().StringP("base-url", "b", "", "The base url for the API")
 	initCmd.Flags().StringP("authorization-header", "a", "", `Authorization header for the API. eg., -a="Bearer *token*"`)
 
 	initCmd.MarkFlagRequired("base-url")
-	initCmd.MarkFlagRequired("authorization-header")
 }

@@ -4,19 +4,18 @@ import (
 	"os"
 
 	"github.com/sharran-murali/apibot/src/constants"
-	"github.com/spf13/cobra"
 )
 
 func GetFileName(fileName string) string {
 	homeDir, err := os.UserHomeDir()
-	cobra.CheckErr(err)
+	CheckErr(err)
 
 	return homeDir + "/" + constants.ApiBotDir + "/" + fileName
 }
 
 func GetApiBotDir() string {
 	homeDir, err := os.UserHomeDir()
-	cobra.CheckErr(err)
+	CheckErr(err)
 
 	return homeDir + "/" + constants.ApiBotDir
 }

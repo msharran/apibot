@@ -17,16 +17,19 @@ package cmd
 
 import (
 	"fmt"
+	"strings"
 	"time"
 
 	spinnerLib "github.com/briandowns/spinner"
-	"github.com/go-resty/resty/v2"
+	"github.com/sharran-murali/apibot/src/api"
 	"github.com/spf13/cobra"
 )
 
 var profileName = "default"
-var client = resty.New()
+var headersString = ""
+var headers map[string]string
 var spinner = spinnerLib.New(spinnerLib.CharSets[11], 100*time.Millisecond)
+var client = api.NewClient()
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -36,7 +39,7 @@ var rootCmd = &cobra.Command{
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("Hi, from ApiBot")
+		fmt.Println("Hi, I am ApiBot. I am here to ease your API testing by managing all your different profiles")
 	},
 }
 
@@ -47,17 +50,21 @@ func Execute() {
 }
 
 func init() {
-	// cobra.OnInitialize(initConfig)
-
-	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
-
-	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.apibot.yaml)")
-	rootCmd.PersistentFlags().StringVarP(&profileName, "profile", "p", "default", "You can use multiple profiles for your client. By default the profile name is default")
-	spinner.Color("blue")
 	spinner.Prefix = "Please wait... "
+	cobra.OnInitialize(setHeaders)
 
-	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
+	rootCmd.PersistentFlags().StringVarP(&profileName, "profile", "p", "default", "You can use multiple profiles for your client. By default the profile name is default")
+	rootCmd.PersistentFlags().StringVarP(&headersString, "headers", "H", "", `Add custom request headers separated by comma. Eg., -h="key1:value1,key2:value2"`)
+}
+
+func setHeaders() {
+	headersSlice := strings.Split(headersString, ",")
+	headers = make(map[string]string)
+	for _, header := range headersSlice {
+		headerKVPair := strings.Split(header, ":")
+		if len(headerKVPair) == 2 {
+			headers[headerKVPair[0]] = headerKVPair[1]
+		}
+	}
+	client.SetHeaders(headers)
 }

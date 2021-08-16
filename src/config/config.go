@@ -7,13 +7,12 @@ import (
 
 	"github.com/sharran-murali/apibot/src/constants"
 	"github.com/sharran-murali/apibot/src/utils"
-	"github.com/spf13/cobra"
 	"gopkg.in/yaml.v2"
 )
 
 func GetConfigFile() string {
 	homeDir, err := os.UserHomeDir()
-	cobra.CheckErr(err)
+	utils.CheckErr(err)
 
 	return homeDir + "/" + constants.ApiBotDir + "/config.yaml"
 }
@@ -24,19 +23,19 @@ func UpdateProfile(name string, profile Profile) {
 
 	if utils.IsFileExist(GetConfigFile()) {
 		existingConfigData, err := ioutil.ReadFile(GetConfigFile())
-		cobra.CheckErr(err)
+		utils.CheckErr(err)
 
 		err = yaml.Unmarshal(existingConfigData, &profiles)
-		cobra.CheckErr(err)
+		utils.CheckErr(err)
 		statusMsg = "updated"
 	}
 
 	profiles[name] = profile
 	newConfigData, err := yaml.Marshal(&profiles)
-	cobra.CheckErr(err)
+	utils.CheckErr(err)
 
 	err = ioutil.WriteFile(GetConfigFile(), newConfigData, constants.FilePerm)
-	cobra.CheckErr(err)
+	utils.CheckErr(err)
 
 	fmt.Printf("ApiBot profile %v successfully!\n", statusMsg)
 }
@@ -45,13 +44,14 @@ func GetProfile(name string) Profile {
 	profiles := make(map[string]Profile)
 
 	existingConfigData, err := ioutil.ReadFile(GetConfigFile())
-	cobra.CheckErr(err)
+	utils.CheckErr(err)
 
 	err = yaml.Unmarshal(existingConfigData, &profiles)
-	cobra.CheckErr(err)
+	utils.CheckErr(err)
 
 	if _, ok := profiles[name]; !ok {
-		utils.ExitWithMsg("Invalid Profile")
+		fmt.Println()
+		utils.LogFatalErrorln(fmt.Sprintf("No profile named '%v' found. Pls provide a valid profile name or create a new Profile using init command", name))
 	}
 
 	return profiles[name]
