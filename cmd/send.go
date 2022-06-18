@@ -16,6 +16,7 @@ limitations under the License.
 package cmd
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/sharran-murali/apibot/src/botfactory"
@@ -35,6 +36,9 @@ var sendCmd = &cobra.Command{
 		reqName := args[0]
 		profile := config.GetProfile(profileName)
 		request := profile.Requests[reqName]
+
+		fmt.Printf("Using profile: %s\n", profileName)
+		fmt.Printf("Using request: %s\n", reqName)
 
 		spinner.Start()
 		resp, err := client.Request(profileName).
